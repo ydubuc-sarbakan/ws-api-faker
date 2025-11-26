@@ -5,13 +5,7 @@ export class Material {
     readonly type: string;
     amount: number;
 
-    constructor(
-        id: string,
-        playerId: string,
-        name: string,
-        type: string,
-        amount: number,
-    ) {
+    constructor(id: string, playerId: string, name: string, type: string, amount: number) {
         this.id = id;
         this.playerId = playerId;
         this.name = name;

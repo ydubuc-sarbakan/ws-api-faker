@@ -1,8 +1,8 @@
-import {AppServerResponse} from "../../app/types/app-server-response.js";
-import type {Card} from "../models/card.js";
+import { AppServerResponse } from '../../app/types/app-server-response.js';
+import type { Card } from '../models/card.js';
 
 export class CardCollectedServerResponse extends AppServerResponse {
-    static readonly ACTION: string = "card-collected";
+    static readonly ACTION: string = 'card-collected';
 
     readonly id: string;
     readonly name: string;

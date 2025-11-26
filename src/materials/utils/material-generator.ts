@@ -1,26 +1,14 @@
-import type {CreateMaterialDto} from "../dtos/create-material-dto.js";
-import {MaterialType} from "../enums/material-type.js";
+import type { CreateMaterialDto } from '../dtos/create-material-dto.js';
+import { MaterialType } from '../enums/material-type.js';
 
 export class MaterialGenerator {
     private static materials: string[][] = [
-        [
-            'Mickey Emblem',
-            MaterialType.MICKEY_EMBLEM,
-        ],
-        [
-            'Minnie Emblem',
-            MaterialType.MINNIE_EMBLEM,
-        ],
-        [
-            'Donald Emblem',
-            MaterialType.DONALD_EMBLEM,
-        ],
+        ['Mickey Emblem', MaterialType.MICKEY_EMBLEM],
+        ['Minnie Emblem', MaterialType.MINNIE_EMBLEM],
+        ['Donald Emblem', MaterialType.DONALD_EMBLEM],
     ];
 
-    private static flower: string[] = [
-        'Flower',
-        MaterialType.FLOWER,
-    ];
+    private static flower: string[] = ['Flower', MaterialType.FLOWER];
 
     static generateCreateMaterialDtoForRace(position: number, playerId: string): CreateMaterialDto {
         let material: string[];

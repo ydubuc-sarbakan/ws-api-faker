@@ -1,23 +1,21 @@
-import {MaterialsService} from "../materials/service.js";
-import {PlayersService} from "../players/service.js";
-import type {PlayerFinishedRaceDto} from "./dtos/player-finished-race-dto.js";
-import type {PlayerFinishedCupDto} from "./dtos/player-finished-cup-dto.js";
-import {CardsService} from "../cards/service.js";
-import type {AppServerResponse} from "../app/types/app-server-response.js";
-import type {Player} from "../players/models/player.js";
-import {ExperienceGenerator} from "./utils/experience-generator.js";
-import type {Material} from "../materials/models/material.js";
-import {MaterialGenerator} from "../materials/utils/material-generator.js";
-import type {CreateMaterialDto} from "../materials/dtos/create-material-dto.js";
-import type {CreateCardDto} from "../cards/dtos/create-card-dto.js";
-import {CardGenerator} from "../cards/utils/card-generator.js";
-import type {UpdatePlayerDto} from "../players/dtos/update-player-dto.js";
-import {CardCollectedServerResponse} from "../cards/messages/card-collected-server-response.js";
-import type {Card} from "../cards/models/card.js";
-import {
-    PlayerGainedExperienceServerResponse
-} from "../players/messages/player-gained-experience-server-response.js";
-import {MaterialCollectedServerResponse} from "../materials/messages/material-collected-server-response.js";
+import { MaterialsService } from '../materials/service.js';
+import { PlayersService } from '../players/service.js';
+import type { PlayerFinishedRaceDto } from './dtos/player-finished-race-dto.js';
+import type { PlayerFinishedCupDto } from './dtos/player-finished-cup-dto.js';
+import { CardsService } from '../cards/service.js';
+import type { AppServerResponse } from '../app/types/app-server-response.js';
+import type { Player } from '../players/models/player.js';
+import { ExperienceGenerator } from './utils/experience-generator.js';
+import type { Material } from '../materials/models/material.js';
+import { MaterialGenerator } from '../materials/utils/material-generator.js';
+import type { CreateMaterialDto } from '../materials/dtos/create-material-dto.js';
+import type { CreateCardDto } from '../cards/dtos/create-card-dto.js';
+import { CardGenerator } from '../cards/utils/card-generator.js';
+import type { UpdatePlayerDto } from '../players/dtos/update-player-dto.js';
+import { CardCollectedServerResponse } from '../cards/messages/card-collected-server-response.js';
+import type { Card } from '../cards/models/card.js';
+import { PlayerGainedExperienceServerResponse } from '../players/messages/player-gained-experience-server-response.js';
+import { MaterialCollectedServerResponse } from '../materials/messages/material-collected-server-response.js';
 
 export class ArcadeService {
     private readonly playersService: PlayersService;
@@ -49,25 +47,40 @@ export class ArcadeService {
             unlockedSkinsToAdd: undefined,
             unlockedCupsToAdd: undefined,
         };
-        operations.push(this.playersService.updatePlayer(updatePlayerDto).then((player: Player) => {
-            const response: PlayerGainedExperienceServerResponse = new PlayerGainedExperienceServerResponse(player.id, experienceGained);
-            responses.push(response);
-        }));
+        operations.push(
+            this.playersService.updatePlayer(updatePlayerDto).then((player: Player) => {
+                const response: PlayerGainedExperienceServerResponse = new PlayerGainedExperienceServerResponse(
+                    player.id,
+                    experienceGained,
+                );
+                responses.push(response);
+            }),
+        );
 
         // material
-        const materialGained: CreateMaterialDto = MaterialGenerator.generateCreateMaterialDtoForRace(dto.position, dto.playerId);
-        operations.push(this.materialsService.giveMaterial(materialGained).then((material: Material) => {
-            const response: MaterialCollectedServerResponse = new MaterialCollectedServerResponse(material, materialGained.amount);
-            responses.push(response);
-        }));
+        const materialGained: CreateMaterialDto = MaterialGenerator.generateCreateMaterialDtoForRace(
+            dto.position,
+            dto.playerId,
+        );
+        operations.push(
+            this.materialsService.giveMaterial(materialGained).then((material: Material) => {
+                const response: MaterialCollectedServerResponse = new MaterialCollectedServerResponse(
+                    material,
+                    materialGained.amount,
+                );
+                responses.push(response);
+            }),
+        );
 
         // card
         if (dto.position == 1) {
             const createCardDto: CreateCardDto = CardGenerator.generateCreateCardDto();
-            operations.push(this.cardsService.createCard(createCardDto).then((card: Card) => {
-                const response: CardCollectedServerResponse = new CardCollectedServerResponse(card)
-                responses.push(response);
-            }));
+            operations.push(
+                this.cardsService.createCard(createCardDto).then((card: Card) => {
+                    const response: CardCollectedServerResponse = new CardCollectedServerResponse(card);
+                    responses.push(response);
+                }),
+            );
         }
 
         await Promise.all(operations);
@@ -90,25 +103,40 @@ export class ArcadeService {
             unlockedSkinsToAdd: undefined,
             unlockedCupsToAdd: undefined,
         };
-        operations.push(this.playersService.updatePlayer(updatePlayerDto).then((player: Player) => {
-            const response: PlayerGainedExperienceServerResponse = new PlayerGainedExperienceServerResponse(player.id, experienceGained);
-            responses.push(response);
-        }));
+        operations.push(
+            this.playersService.updatePlayer(updatePlayerDto).then((player: Player) => {
+                const response: PlayerGainedExperienceServerResponse = new PlayerGainedExperienceServerResponse(
+                    player.id,
+                    experienceGained,
+                );
+                responses.push(response);
+            }),
+        );
 
         // material
-        const materialGained: CreateMaterialDto = MaterialGenerator.generateCreateMaterialDtoForCup(dto.position, dto.playerId);
-        operations.push(this.materialsService.giveMaterial(materialGained).then((material: Material) => {
-            const response: MaterialCollectedServerResponse = new MaterialCollectedServerResponse(material, materialGained.amount);
-            responses.push(response);
-        }));
+        const materialGained: CreateMaterialDto = MaterialGenerator.generateCreateMaterialDtoForCup(
+            dto.position,
+            dto.playerId,
+        );
+        operations.push(
+            this.materialsService.giveMaterial(materialGained).then((material: Material) => {
+                const response: MaterialCollectedServerResponse = new MaterialCollectedServerResponse(
+                    material,
+                    materialGained.amount,
+                );
+                responses.push(response);
+            }),
+        );
 
         // card
         if (dto.position == 1) {
             const createCardDto: CreateCardDto = CardGenerator.generateCreateCardDto();
-            operations.push(this.cardsService.createCard(createCardDto).then((card: Card) => {
-                const response: CardCollectedServerResponse = new CardCollectedServerResponse(card)
-                responses.push(response);
-            }));
+            operations.push(
+                this.cardsService.createCard(createCardDto).then((card: Card) => {
+                    const response: CardCollectedServerResponse = new CardCollectedServerResponse(card);
+                    responses.push(response);
+                }),
+            );
         }
 
         await Promise.all(operations);

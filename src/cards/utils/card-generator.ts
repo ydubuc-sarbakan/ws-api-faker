@@ -1,4 +1,4 @@
-import type {CreateCardDto} from "../dtos/create-card-dto.js";
+import type { CreateCardDto } from '../dtos/create-card-dto.js';
 
 export class CardGenerator {
     private static names: string[] = [
@@ -14,20 +14,9 @@ export class CardGenerator {
         'Turbo',
     ];
 
-    private static racerIds: string[] = [
-        "Mickey",
-        "Minnie",
-        "Donald",
-    ]
+    private static racerIds: string[] = ['Mickey', 'Minnie', 'Donald'];
 
-    private static rarities: string[] = [
-        'HR',
-        'SER',
-        'SRR',
-        'SR',
-        'R',
-        'N',
-    ];
+    private static rarities: string[] = ['HR', 'SER', 'SRR', 'SR', 'R', 'N'];
 
     static generateCreateCardDto(): CreateCardDto {
         const dto: CreateCardDto = {

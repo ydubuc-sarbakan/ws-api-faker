@@ -1,4 +1,4 @@
-import type {WsClientRequest} from "./ws-client-request.js";
+import type { WsClientRequest } from './ws-client-request.js';
 
 export abstract class WsRouter<T extends WsClientRequest> {
     private readonly _subRouters: WsRouter<T>[];

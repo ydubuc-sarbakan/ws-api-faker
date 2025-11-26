@@ -1,4 +1,4 @@
-import {WsServerRequest} from "../core/types/ws-server-request.js";
+import { WsServerRequest } from '../core/types/ws-server-request.js';
 
 export abstract class AppServerRequest extends WsServerRequest {
     readonly action: string;
@@ -9,6 +9,6 @@ export abstract class AppServerRequest extends WsServerRequest {
     }
 
     serialize(): string {
-        return JSON.stringify(this)
+        return JSON.stringify(this);
     }
 }

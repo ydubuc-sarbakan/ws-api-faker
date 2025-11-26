@@ -1,4 +1,4 @@
-import {WsClientRequest} from "../core/types/ws-client-request.js";
+import { WsClientRequest } from '../core/types/ws-client-request.js';
 
 export abstract class AppClientRequest extends WsClientRequest {
     readonly action: string = '';

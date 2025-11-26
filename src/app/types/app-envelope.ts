@@ -1,4 +1,4 @@
-import {WsClientRequest} from "../core/types/ws-client-request.js";
+import { WsClientRequest } from '../core/types/ws-client-request.js';
 
 export class AppEnvelope extends WsClientRequest {
     action: string = '';

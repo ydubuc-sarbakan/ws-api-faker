@@ -1,29 +1,26 @@
-import type {CreateCardDto} from "./dtos/create-card-dto.js";
-import type {Card} from "./models/card.js";
-import {Stash} from "../app/managers/stash/stash.js";
-import type {GetCardDto} from "./dtos/get-card-dto.js";
-import type {UpdateCardDto} from "./dtos/update-card-dto.js";
-import type {DeleteCardDto} from "./dtos/delete-card-dto.js";
-import type {UpgradeCardDto} from "./dtos/upgrade-card-dto.js";
-import {MaterialsService} from "../materials/service.js";
-import type {Material} from "../materials/models/material.js";
+import type { CreateCardDto } from './dtos/create-card-dto.js';
+import type { Card } from './models/card.js';
+import { Stash } from '../app/managers/stash/stash.js';
+import type { GetCardDto } from './dtos/get-card-dto.js';
+import type { UpdateCardDto } from './dtos/update-card-dto.js';
+import type { DeleteCardDto } from './dtos/delete-card-dto.js';
+import type { UpgradeCardDto } from './dtos/upgrade-card-dto.js';
+import { MaterialsService } from '../materials/service.js';
+import type { Material } from '../materials/models/material.js';
 
 export class CardsService {
     private readonly stash: Stash;
     private readonly materialsService: MaterialsService;
 
-    constructor(
-        stash: Stash = new Stash("cards"),
-        materialsService: MaterialsService = new MaterialsService(),
-    ) {
+    constructor(stash: Stash = new Stash('cards'), materialsService: MaterialsService = new MaterialsService()) {
         this.stash = stash;
         this.materialsService = materialsService;
     }
 
-    async createCard(dto: CreateCardDto) : Promise<Card> {
+    async createCard(dto: CreateCardDto): Promise<Card> {
         const card: Card = {
             id: crypto.randomUUID(),
-            ...dto
+            ...dto,
         };
 
         try {
@@ -34,8 +31,8 @@ export class CardsService {
         }
     }
 
-    async getCard(dto: GetCardDto) : Promise<Card> {
-        const card: Card | undefined = await this.stash.get<Card>(dto.id)
+    async getCard(dto: GetCardDto): Promise<Card> {
+        const card: Card | undefined = await this.stash.get<Card>(dto.id);
         if (!card) {
             throw new Error(`Failed to get card with id "${dto.id}"`);
         }
@@ -43,7 +40,7 @@ export class CardsService {
         return card;
     }
 
-    async upgradeCard(dto: UpgradeCardDto) : Promise<Card> {
+    async upgradeCard(dto: UpgradeCardDto): Promise<Card> {
         const card: Card = await this.getCard({ id: dto.id });
         const material: Material = await this.materialsService.getMaterial({ id: dto.upgradeMaterialId });
 
@@ -69,7 +66,7 @@ export class CardsService {
         return this.updateCard(updateCardDto);
     }
 
-    private async updateCard(dto: UpdateCardDto) : Promise<Card> {
+    private async updateCard(dto: UpdateCardDto): Promise<Card> {
         const card: Card = await this.getCard({ id: dto.id });
 
         if (dto.name) card.name = dto.name;
@@ -86,7 +83,7 @@ export class CardsService {
         }
     }
 
-    async deleteCard(dto: DeleteCardDto) : Promise<void | Error> {
+    async deleteCard(dto: DeleteCardDto): Promise<void | Error> {
         try {
             await this.stash.delete(dto.id);
         } catch (e) {

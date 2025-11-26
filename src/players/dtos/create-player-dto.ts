@@ -4,12 +4,7 @@ export class CreatePlayerDto {
     readonly unlockedSkins: string[];
     readonly unlockedCups: string[];
 
-    constructor(
-        name: string,
-        experience: number,
-        unlockedSkins: string[],
-        unlockedCups: string[],
-    ) {
+    constructor(name: string, experience: number, unlockedSkins: string[], unlockedCups: string[]) {
         this.name = name;
         this.experience = experience;
         this.unlockedSkins = unlockedSkins;

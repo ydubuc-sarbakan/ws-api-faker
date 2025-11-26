@@ -1,8 +1,8 @@
-import type {Material} from "../models/material.js";
-import {AppServerResponse} from "../../app/types/app-server-response.js";
+import type { Material } from '../models/material.js';
+import { AppServerResponse } from '../../app/types/app-server-response.js';
 
 export class MaterialCollectedServerResponse extends AppServerResponse {
-    static readonly ACTION: string = "material-collected";
+    static readonly ACTION: string = 'material-collected';
 
     readonly id: string;
     readonly playerId: string;

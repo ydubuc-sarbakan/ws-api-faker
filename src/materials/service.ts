@@ -1,25 +1,23 @@
-import {Stash} from "../app/managers/stash/stash.js";
-import type {CreateMaterialDto} from "./dtos/create-material-dto.js";
-import {Material} from "./models/material.js";
-import type {GetMaterialDto} from "./dtos/get-material-dto.js";
-import type {DeleteMaterialDto} from "./dtos/delete-material-dto.js";
-import type {UpdateMaterialDto} from "./dtos/update-material-dto.js";
+import { Stash } from '../app/managers/stash/stash.js';
+import type { CreateMaterialDto } from './dtos/create-material-dto.js';
+import { Material } from './models/material.js';
+import type { GetMaterialDto } from './dtos/get-material-dto.js';
+import type { DeleteMaterialDto } from './dtos/delete-material-dto.js';
+import type { UpdateMaterialDto } from './dtos/update-material-dto.js';
 
 export class MaterialsService {
     private readonly stash: Stash;
 
-    constructor(
-        stash: Stash = new Stash("materials"),
-    ) {
+    constructor(stash: Stash = new Stash('materials')) {
         this.stash = stash;
     }
 
-    async createMaterial(dto: CreateMaterialDto) : Promise<Material> {
+    async createMaterial(dto: CreateMaterialDto): Promise<Material> {
         const materialId = `${dto.playerId}-${dto.type}`;
         let material: Material = {
             id: materialId,
-            ...dto
-        }
+            ...dto,
+        };
 
         try {
             const _ = await this.stash.put(material, material.id, false);
@@ -29,7 +27,7 @@ export class MaterialsService {
         }
     }
 
-    async giveMaterial(dto: CreateMaterialDto) : Promise<Material> {
+    async giveMaterial(dto: CreateMaterialDto): Promise<Material> {
         const materialId = `${dto.playerId}-${dto.type}`;
         let material: Material;
 
@@ -39,14 +37,14 @@ export class MaterialsService {
             const updateDto: UpdateMaterialDto = {
                 id: material.id,
                 amountToModify: dto.amount,
-            }
+            };
 
             return this.updateMaterial(updateDto);
         } catch (e) {
             // material doesn't exist, create it
             material = {
                 id: materialId,
-                ...dto
+                ...dto,
             };
         }
 
@@ -58,8 +56,8 @@ export class MaterialsService {
         }
     }
 
-    async getMaterial(dto: GetMaterialDto) : Promise<Material> {
-        const material: Material | undefined = await this.stash.get<Material>(dto.id)
+    async getMaterial(dto: GetMaterialDto): Promise<Material> {
+        const material: Material | undefined = await this.stash.get<Material>(dto.id);
         if (!material) {
             throw new Error(`Failed to get material with id "${dto.id}"`);
         }
@@ -80,7 +78,7 @@ export class MaterialsService {
         }
     }
 
-    async deleteMaterial(dto: DeleteMaterialDto) : Promise<void> {
+    async deleteMaterial(dto: DeleteMaterialDto): Promise<void> {
         try {
             await this.stash.delete(dto.id);
         } catch (e) {

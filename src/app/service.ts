@@ -1,13 +1,11 @@
-import {TestServerResponse} from "./messages/test-server-response.js";
-import {TestClientRequest} from "./messages/test-client-request.js";
-import {Stash} from "./managers/stash/stash.js";
+import { TestServerResponse } from './messages/test-server-response.js';
+import { TestClientRequest } from './messages/test-client-request.js';
+import { Stash } from './managers/stash/stash.js';
 
 export class AppService {
     private readonly stash: Stash;
 
-    constructor(
-        stash: Stash = new Stash("app"),
-    ) {
+    constructor(stash: Stash = new Stash('app')) {
         this.stash = stash;
     }
 
@@ -20,7 +18,7 @@ export class AppService {
             testClientRequest.floatValue,
             testClientRequest.floatArray,
             testClientRequest.boolValue,
-            testClientRequest.boolArray
+            testClientRequest.boolArray,
         );
 
         console.log('Handled TestClientRequest:', response.serialize());

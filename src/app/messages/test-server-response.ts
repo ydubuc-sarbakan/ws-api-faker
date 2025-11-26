@@ -1,4 +1,4 @@
-import {AppServerResponse} from "../types/app-server-response.js";
+import { AppServerResponse } from '../types/app-server-response.js';
 
 export class TestServerResponse extends AppServerResponse {
     static readonly ACTION: string = 'test';
@@ -20,7 +20,7 @@ export class TestServerResponse extends AppServerResponse {
         floatValue: number,
         floatArray: number[],
         boolValue: boolean,
-        boolArray: boolean[]
+        boolArray: boolean[],
     ) {
         super(TestServerResponse.ACTION);
         this.stringValue = stringValue;

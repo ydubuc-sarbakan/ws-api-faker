@@ -1,19 +1,17 @@
-import {CreatePlayerClientRequest} from "./messages/create-player-client-request.js";
-import {GetPlayerClientRequest} from "./messages/get-player-client-request.js";
-import {UpdatePlayerClientRequest} from "./messages/update-player-client-request.js";
-import {DeletePlayerClientRequest} from "./messages/delete-player-client-request.js";
-import {PlayersService} from "./service.js";
-import type {CreatePlayerDto} from "./dtos/create-player-dto.js";
-import type {GetPlayerDto} from "./dtos/get-player-dto.js";
-import type {UpdatePlayerDto} from "./dtos/update-player-dto.js";
-import type {DeletePlayerDto} from "./dtos/delete-player-dto.js";
+import { CreatePlayerClientRequest } from './messages/create-player-client-request.js';
+import { GetPlayerClientRequest } from './messages/get-player-client-request.js';
+import { UpdatePlayerClientRequest } from './messages/update-player-client-request.js';
+import { DeletePlayerClientRequest } from './messages/delete-player-client-request.js';
+import { PlayersService } from './service.js';
+import type { CreatePlayerDto } from './dtos/create-player-dto.js';
+import type { GetPlayerDto } from './dtos/get-player-dto.js';
+import type { UpdatePlayerDto } from './dtos/update-player-dto.js';
+import type { DeletePlayerDto } from './dtos/delete-player-dto.js';
 
 export class PlayersController {
     private readonly playersService: PlayersService;
 
-    constructor(
-        playersService: PlayersService = new PlayersService()
-    ) {
+    constructor(playersService: PlayersService = new PlayersService()) {
         this.playersService = playersService;
     }
 

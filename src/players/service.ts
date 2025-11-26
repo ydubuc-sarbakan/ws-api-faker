@@ -1,20 +1,18 @@
-import {Player} from "./models/player.js";
-import {Stash} from "../app/managers/stash/stash.js";
-import type {CreatePlayerDto} from "./dtos/create-player-dto.js";
-import type {GetPlayerDto} from "./dtos/get-player-dto.js";
-import type {UpdatePlayerDto} from "./dtos/update-player-dto.js";
-import type {DeletePlayerDto} from "./dtos/delete-player-dto.js";
+import { Player } from './models/player.js';
+import { Stash } from '../app/managers/stash/stash.js';
+import type { CreatePlayerDto } from './dtos/create-player-dto.js';
+import type { GetPlayerDto } from './dtos/get-player-dto.js';
+import type { UpdatePlayerDto } from './dtos/update-player-dto.js';
+import type { DeletePlayerDto } from './dtos/delete-player-dto.js';
 
 export class PlayersService {
     private readonly stash: Stash;
 
-    constructor(
-        stash: Stash = new Stash("players"),
-    ) {
+    constructor(stash: Stash = new Stash('players')) {
         this.stash = stash;
     }
 
-    async createPlayer(dto: CreatePlayerDto) : Promise<Player> {
+    async createPlayer(dto: CreatePlayerDto): Promise<Player> {
         const player: Player = {
             id: crypto.randomUUID(),
             ...dto,
@@ -28,7 +26,7 @@ export class PlayersService {
         }
     }
 
-    async getPlayer(dto: GetPlayerDto) : Promise<Player> {
+    async getPlayer(dto: GetPlayerDto): Promise<Player> {
         const player: Player | undefined = await this.stash.get<Player>(dto.id);
         if (!player) {
             throw new Error(`Failed to get player with id "${dto.id}"`);
@@ -37,7 +35,7 @@ export class PlayersService {
         return player;
     }
 
-    async updatePlayer(dto: UpdatePlayerDto) : Promise<Player> {
+    async updatePlayer(dto: UpdatePlayerDto): Promise<Player> {
         const player: Player = await this.getPlayer({ id: dto.id });
 
         if (dto.name) player.name = dto.name;
@@ -53,7 +51,7 @@ export class PlayersService {
         }
     }
 
-    async deletePlayer(dto: DeletePlayerDto) : Promise<void> {
+    async deletePlayer(dto: DeletePlayerDto): Promise<void> {
         try {
             await this.stash.delete(dto.id);
         } catch (e) {

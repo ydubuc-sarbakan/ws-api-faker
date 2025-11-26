@@ -1,12 +1,10 @@
-import {AppService} from "./service.js";
-import {TestClientRequest} from "./messages/test-client-request.js";
+import { AppService } from './service.js';
+import { TestClientRequest } from './messages/test-client-request.js';
 
 export class AppController {
     private readonly appService: AppService;
 
-    constructor(
-        appService: AppService = new AppService()
-    ) {
+    constructor(appService: AppService = new AppService()) {
         this.appService = appService;
     }
 
