@@ -37,14 +37,16 @@ export class PlayersService {
 
     async updatePlayer(dto: UpdatePlayerDto): Promise<Player> {
         const player: Player = await this.getPlayer({ id: dto.id });
+        let updatedPlayer: any = { ...player };
 
-        if (dto.name) player.name = dto.name;
-        if (dto.experienceToAdd) player.experience += dto.experienceToAdd;
-        if (dto.unlockedSkinsToAdd) player.unlockedSkins.push(...dto.unlockedSkinsToAdd);
-        if (dto.unlockedCupsToAdd) player.unlockedCups.push(...dto.unlockedCupsToAdd);
+        if (dto.name) updatedPlayer.name = dto.name;
+        if (dto.experience) updatedPlayer.experience = dto.experience;
+        if (dto.levelsToAdd) updatedPlayer.level += dto.levelsToAdd;
+        if (dto.unlockedSkinsToAdd) updatedPlayer.unlockedSkins.push(...dto.unlockedSkinsToAdd);
+        if (dto.unlockedCupsToAdd) updatedPlayer.unlockedCups.push(...dto.unlockedCupsToAdd);
 
         try {
-            const _ = await this.stash.put(player, player.id, true);
+            const _ = await this.stash.put(updatedPlayer, player.id, true);
             return player;
         } catch (e) {
             throw new Error(`Failed to update player with id "${dto.id}": ${(e as Error).message}`);

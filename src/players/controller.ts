@@ -19,6 +19,7 @@ export class PlayersController {
         const dto: CreatePlayerDto = {
             name: request.name,
             experience: 0,
+            level: 1,
             unlockedSkins: [],
             unlockedCups: [],
         };
@@ -38,7 +39,8 @@ export class PlayersController {
         const dto: UpdatePlayerDto = {
             id: request.id,
             name: request.name,
-            experienceToAdd: undefined,
+            experience: undefined,
+            levelsToAdd: undefined,
             unlockedSkinsToAdd: undefined,
             unlockedCupsToAdd: undefined,
         };

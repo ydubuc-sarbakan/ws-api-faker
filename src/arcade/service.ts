@@ -16,6 +16,7 @@ import { CardCollectedServerResponse } from '../cards/messages/card-collected-se
 import type { Card } from '../cards/models/card.js';
 import { PlayerGainedExperienceServerResponse } from '../players/messages/player-gained-experience-server-response.js';
 import { MaterialCollectedServerResponse } from '../materials/messages/material-collected-server-response.js';
+import { LevelCalculator } from './utils/level-calculator.js';
 
 export class ArcadeService {
     private readonly playersService: PlayersService;
@@ -37,13 +38,21 @@ export class ArcadeService {
         const responses: AppServerResponse[] = [];
 
         const player: Player = await this.playersService.getPlayer({ id: dto.playerId });
+        const previousLevel: number = player.level;
 
-        // experience
+        // experience & levels
         const experienceGained: number = ExperienceGenerator.giveExperienceForRacePosition(dto.position);
+        const experienceAndLevelsGained = LevelCalculator.determineExperienceAndLevelsGained(player, experienceGained);
+
+        const newLevel: number = player.level;
+
+        // TODO: get unlocked skins based on level thresholds
+
         const updatePlayerDto: UpdatePlayerDto = {
             id: player.id,
             name: undefined,
-            experienceToAdd: experienceGained,
+            experience: experienceAndLevelsGained[0],
+            levelsToAdd: experienceAndLevelsGained[1],
             unlockedSkinsToAdd: undefined,
             unlockedCupsToAdd: undefined,
         };
@@ -96,10 +105,13 @@ export class ArcadeService {
 
         // experience
         const experienceGained: number = ExperienceGenerator.giveExperienceForCupPosition(dto.position);
+        const experienceAndLevelsGained = LevelCalculator.determineExperienceAndLevelsGained(player, experienceGained);
+
         const updatePlayerDto: UpdatePlayerDto = {
             id: player.id,
             name: undefined,
-            experienceToAdd: experienceGained,
+            experience: experienceAndLevelsGained[0],
+            levelsToAdd: experienceAndLevelsGained[1],
             unlockedSkinsToAdd: undefined,
             unlockedCupsToAdd: undefined,
         };
