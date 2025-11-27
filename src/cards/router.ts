@@ -20,18 +20,17 @@ export class CardsRouter extends WsRouter<AppEnvelope> {
     handled(requestEnvelope: AppEnvelope, socket: WebSocket): boolean {
         switch (requestEnvelope.action) {
             case BuyCardClientRequest.ACTION: {
-                this.cardsController.handleBuyCardClientRequest(requestEnvelope.openAs(BuyCardClientRequest), socket);
+                const request = requestEnvelope.openAs(BuyCardClientRequest);
+                this.tryHandling(() => this.cardsController.handleBuyCardClientRequest(request, socket));
                 return true;
             }
             case UpgradeCardClientRequest.ACTION: {
-                this.cardsController.handleUpgradeCardClientRequest(
-                    requestEnvelope.openAs(UpgradeCardClientRequest),
-                    socket,
-                );
+                const request = requestEnvelope.openAs(UpgradeCardClientRequest);
+                this.tryHandling(() => this.cardsController.handleUpgradeCardClientRequest(request, socket));
                 return true;
             }
-            default:
-                return false;
         }
+
+        return false;
     }
 }

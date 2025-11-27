@@ -22,4 +22,10 @@ export abstract class WsRouter<T extends WsClientRequest> {
 
         return false;
     }
+
+    protected tryHandling(task: () => Promise<any>): void {
+        Promise.resolve()
+            .then(() => task())
+            .catch((e) => console.error(e));
+    }
 }

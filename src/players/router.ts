@@ -22,35 +22,27 @@ export class PlayersRouter extends WsRouter<AppEnvelope> {
     handled(requestEnvelope: AppEnvelope, socket: WebSocket): boolean {
         switch (requestEnvelope.action) {
             case CreatePlayerClientRequest.ACTION: {
-                this.playersController.handleCreatePlayerClientRequest(
-                    requestEnvelope.openAs(CreatePlayerClientRequest),
-                    socket,
-                );
+                const request = requestEnvelope.openAs(CreatePlayerClientRequest);
+                this.tryHandling(() => this.playersController.handleCreatePlayerClientRequest(request, socket));
                 return true;
             }
             case GetPlayerClientRequest.ACTION: {
-                this.playersController.handleGetPlayerClientRequest(
-                    requestEnvelope.openAs(GetPlayerClientRequest),
-                    socket,
-                );
+                const request = requestEnvelope.openAs(GetPlayerClientRequest);
+                this.tryHandling(() => this.playersController.handleGetPlayerClientRequest(request, socket));
                 return true;
             }
             case UpdatePlayerClientRequest.ACTION: {
-                this.playersController.handleUpdatePlayerClientRequest(
-                    requestEnvelope.openAs(UpdatePlayerClientRequest),
-                    socket,
-                );
+                const request = requestEnvelope.openAs(UpdatePlayerClientRequest);
+                this.tryHandling(() => this.playersController.handleUpdatePlayerClientRequest(request, socket));
                 return true;
             }
             case DeletePlayerClientRequest.ACTION: {
-                this.playersController.handleDeletePlayerClientRequest(
-                    requestEnvelope.openAs(DeletePlayerClientRequest),
-                    socket,
-                );
+                const request = requestEnvelope.openAs(DeletePlayerClientRequest);
+                this.tryHandling(() => this.playersController.handleDeletePlayerClientRequest(request, socket));
                 return true;
             }
-            default:
-                return false;
         }
+
+        return false;
     }
 }

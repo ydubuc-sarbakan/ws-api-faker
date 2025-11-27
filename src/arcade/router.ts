@@ -20,17 +20,13 @@ export class ArcadeRouter extends WsRouter<AppEnvelope> {
     handled(requestEnvelope: AppEnvelope, socket: WebSocket): boolean {
         switch (requestEnvelope.action) {
             case PlayerFinishedRaceClientRequest.ACTION: {
-                this.arcadeController.handlePlayerFinishedRaceClientRequest(
-                    requestEnvelope.openAs(PlayerFinishedRaceClientRequest),
-                    socket,
-                );
+                const request = requestEnvelope.openAs(PlayerFinishedRaceClientRequest);
+                this.tryHandling(() => this.arcadeController.handlePlayerFinishedRaceClientRequest(request, socket));
                 return true;
             }
             case PlayerFinishedCupClientRequest.ACTION: {
-                this.arcadeController.handlePlayerFinishedCupClientRequest(
-                    requestEnvelope.openAs(PlayerFinishedCupClientRequest),
-                    socket,
-                );
+                const request = requestEnvelope.openAs(PlayerFinishedCupClientRequest);
+                this.tryHandling(() => this.arcadeController.handlePlayerFinishedCupClientRequest(request, socket));
                 return true;
             }
             default:

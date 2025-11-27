@@ -20,21 +20,17 @@ export class AuthRouter extends WsRouter<AppEnvelope> {
     handled(requestEnvelope: AppEnvelope, socket: WebSocket): boolean {
         switch (requestEnvelope.action) {
             case GetQrCodeClientRequest.ACTION: {
-                this.authController.handleGetQrCodeClientRequest(
-                    requestEnvelope.openAs(GetQrCodeClientRequest),
-                    socket,
-                );
+                const request = requestEnvelope.openAs(GetQrCodeClientRequest);
+                this.tryHandling(() => this.authController.handleGetQrCodeClientRequest(request, socket));
                 return true;
             }
             case QrCodeScanCheatClientRequest.ACTION: {
-                this.authController.handleQrCodeScanCheatClientRequest(
-                    requestEnvelope.openAs(QrCodeScanCheatClientRequest),
-                    socket,
-                );
+                const request = requestEnvelope.openAs(QrCodeScanCheatClientRequest);
+                this.tryHandling(() => this.authController.handleQrCodeScanCheatClientRequest(request, socket));
                 return true;
             }
-            default:
-                return false;
         }
+
+        return false;
     }
 }

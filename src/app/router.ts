@@ -25,11 +25,13 @@ export class AppRouter extends WsRouter<AppEnvelope> {
 
     handled(requestEnvelope: AppEnvelope, socket: WebSocket): boolean {
         switch (requestEnvelope.action) {
-            case TestClientRequest.ACTION:
-                this.appController.handleTestClientRequest(requestEnvelope.openAs(TestClientRequest), socket);
+            case TestClientRequest.ACTION: {
+                const request = requestEnvelope.openAs(TestClientRequest);
+                this.tryHandling(() => this.appController.handleTestClientRequest(request, socket));
                 return true;
-            default:
-                return false;
+            }
         }
+
+        return false;
     }
 }
