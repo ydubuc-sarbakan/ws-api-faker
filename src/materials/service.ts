@@ -4,11 +4,12 @@ import { Material } from './models/material.js';
 import type { GetMaterialDto } from './dtos/get-material-dto.js';
 import type { DeleteMaterialDto } from './dtos/delete-material-dto.js';
 import type { UpdateMaterialDto } from './dtos/update-material-dto.js';
+import { StashManager } from '../app/managers/stash/stash-manager.js';
 
 export class MaterialsService {
     private readonly stash: Stash;
 
-    constructor(stash: Stash = new Stash('materials')) {
+    constructor(stash: Stash = StashManager.Instance().getStash('materials')!) {
         this.stash = stash;
     }
 

@@ -1,11 +1,12 @@
 import { TestServerResponse } from './messages/responses/test-server-response.js';
 import { TestClientRequest } from './messages/requests/test-client-request.js';
 import { Stash } from './managers/stash/stash.js';
+import { StashManager } from './managers/stash/stash-manager.js';
 
 export class AppService {
     private readonly stash: Stash;
 
-    constructor(stash: Stash = new Stash('app')) {
+    constructor(stash: Stash = StashManager.Instance().getStash('app')!) {
         this.stash = stash;
     }
 

@@ -4,11 +4,12 @@ import type { CreatePlayerDto } from './dtos/create-player-dto.js';
 import type { GetPlayerDto } from './dtos/get-player-dto.js';
 import type { UpdatePlayerDto } from './dtos/update-player-dto.js';
 import type { DeletePlayerDto } from './dtos/delete-player-dto.js';
+import { StashManager } from '../app/managers/stash/stash-manager.js';
 
 export class PlayersService {
     private readonly stash: Stash;
 
-    constructor(stash: Stash = new Stash('players')) {
+    constructor(stash: Stash = StashManager.Instance().getStash('players')!) {
         this.stash = stash;
     }
 
@@ -32,6 +33,7 @@ export class PlayersService {
             throw new Error(`Failed to get player with id "${dto.id}"`);
         }
 
+        console.log('PlayersService getPlayer: ', JSON.stringify(player));
         return player;
     }
 
@@ -45,8 +47,13 @@ export class PlayersService {
         if (dto.unlockedSkinsToAdd) updatedPlayer.unlockedSkins.push(...dto.unlockedSkinsToAdd);
         if (dto.unlockedCupsToAdd) updatedPlayer.unlockedCups.push(...dto.unlockedCupsToAdd);
 
+        console.log('PlayersService updatePlayer - updatedPlayer: ', JSON.stringify(updatedPlayer));
+
         try {
-            const _ = await this.stash.put(updatedPlayer, player.id, true);
+            const temp = await this.stash.put(updatedPlayer, player.id, true);
+            console.log('PlayersService updatePlayer - temp: ', JSON.stringify(temp));
+            const temp2 = await this.stash.get(player.id);
+            console.log('PlayersService updatePlayer - temp2: ', JSON.stringify(temp2));
             return updatedPlayer as Player;
         } catch (e) {
             throw new Error(`Failed to update player with id "${dto.id}": ${(e as Error).message}`);

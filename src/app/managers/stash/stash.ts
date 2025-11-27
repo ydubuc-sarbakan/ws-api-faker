@@ -25,7 +25,7 @@ export class Stash {
         }
 
         await writeFile(this.pathToKey(key), JSON.stringify(valueToWrite), 'utf8');
-        this._data.set(key, value);
+        this._data.set(key, valueToWrite);
 
         return valueToWrite;
     }

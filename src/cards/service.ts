@@ -7,12 +7,16 @@ import type { DeleteCardDto } from './dtos/delete-card-dto.js';
 import type { UpgradeCardDto } from './dtos/upgrade-card-dto.js';
 import { MaterialsService } from '../materials/service.js';
 import type { Material } from '../materials/models/material.js';
+import { StashManager } from '../app/managers/stash/stash-manager.js';
 
 export class CardsService {
     private readonly stash: Stash;
     private readonly materialsService: MaterialsService;
 
-    constructor(stash: Stash = new Stash('cards'), materialsService: MaterialsService = new MaterialsService()) {
+    constructor(
+        stash: Stash = StashManager.Instance().getStash('cards')!,
+        materialsService: MaterialsService = new MaterialsService(),
+    ) {
         this.stash = stash;
         this.materialsService = materialsService;
     }
