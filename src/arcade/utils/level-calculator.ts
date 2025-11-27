@@ -22,7 +22,7 @@ export class LevelCalculator {
         return [currentExperience, levelsGained];
     }
 
-    private static levelThreshold(currentLevel: number): number {
+    static levelThreshold(currentLevel: number): number {
         return 100 + (currentLevel - 1) * 50;
     }
 }

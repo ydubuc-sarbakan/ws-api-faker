@@ -47,7 +47,7 @@ export class PlayersService {
 
         try {
             const _ = await this.stash.put(updatedPlayer, player.id, true);
-            return player;
+            return updatedPlayer as Player;
         } catch (e) {
             throw new Error(`Failed to update player with id "${dto.id}": ${(e as Error).message}`);
         }

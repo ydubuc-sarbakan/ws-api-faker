@@ -48,12 +48,17 @@ export class CardsService {
             throw new Error(`Failed to upgrade card with id "${dto.id}": not enough materials`);
         }
 
+        const materialXp = 100;
+        const experienceGained: number = dto.upgradeMaterialAmount * materialXp;
+        const levelsGained = 0;
+
         const updateCardDto: UpdateCardDto = {
             id: card.id,
             name: undefined,
             racerId: undefined,
             rarity: undefined,
-            experienceToAdd: 100,
+            experience: card.experience + experienceGained,
+            levelsToAdd: levelsGained,
             unlockedSkinsToAdd: undefined,
         };
 
@@ -68,16 +73,18 @@ export class CardsService {
 
     private async updateCard(dto: UpdateCardDto): Promise<Card> {
         const card: Card = await this.getCard({ id: dto.id });
+        const updatedCard: any = { ...card };
 
-        if (dto.name) card.name = dto.name;
-        if (dto.racerId) card.racerId = dto.racerId;
-        if (dto.rarity) card.rarity = dto.rarity;
-        if (dto.experienceToAdd) card.experience += dto.experienceToAdd;
-        if (dto.unlockedSkinsToAdd) card.unlockedSkins.push(...dto.unlockedSkinsToAdd);
+        if (dto.name) updatedCard.name = dto.name;
+        if (dto.racerId) updatedCard.racerId = dto.racerId;
+        if (dto.rarity) updatedCard.rarity = dto.rarity;
+        if (dto.experience) updatedCard.experience = dto.experience;
+        if (dto.levelsToAdd) updatedCard.level += dto.levelsToAdd;
+        if (dto.unlockedSkinsToAdd) updatedCard.unlockedSkins.push(...dto.unlockedSkinsToAdd);
 
         try {
-            const _ = await this.stash.put(card, card.id, true);
-            return card;
+            const _ = await this.stash.put(updatedCard, card.id, true);
+            return updatedCard as Card;
         } catch (e) {
             throw new Error(`Failed to update card with id "${dto.id}": ${(e as Error).message}`);
         }

@@ -1,11 +1,11 @@
-import type { BuyCardClientRequest } from './messages/buy-card-client-request.js';
+import type { BuyCardClientRequest } from './messages/requests/buy-card-client-request.js';
 import { CardsService } from './service.js';
 import type { CreateCardDto } from './dtos/create-card-dto.js';
-import { UpgradeCardClientRequest } from './messages/upgrade-card-client-request.js';
+import { UpgradeCardClientRequest } from './messages/requests/upgrade-card-client-request.js';
 import type { UpgradeCardDto } from './dtos/upgrade-card-dto.js';
 import { CardGenerator } from './utils/card-generator.js';
 import type { Card } from './models/card.js';
-import { CardCollectedServerResponse } from './messages/card-collected-server-response.js';
+import { CardCollectedServerResponse } from './messages/responses/card-collected-server-response.js';
 
 export class CardsController {
     private readonly cardsService: CardsService;

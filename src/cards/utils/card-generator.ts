@@ -24,6 +24,7 @@ export class CardGenerator {
             racerId: this.racerIds[Math.floor(Math.random() * this.racerIds.length)] as string,
             rarity: this.rarities[Math.floor(Math.random() * this.rarities.length)] as string,
             experience: 0,
+            level: 1,
             unlockedSkins: [],
         };
 

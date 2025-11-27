@@ -1,4 +1,4 @@
-import { AppClientRequest } from '../../app/types/app-client-response.js';
+import { AppClientRequest } from '../../../app/types/app-client-response.js';
 
 export class UpgradeCardClientRequest extends AppClientRequest {
     static readonly ACTION: string = 'upgrade-card';

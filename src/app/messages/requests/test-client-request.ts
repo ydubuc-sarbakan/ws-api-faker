@@ -1,4 +1,4 @@
-import { AppClientRequest } from '../types/app-client-response.js';
+import { AppClientRequest } from '../../types/app-client-response.js';
 
 export class TestClientRequest extends AppClientRequest {
     static readonly ACTION: string = 'test';

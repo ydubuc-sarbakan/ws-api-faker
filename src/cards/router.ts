@@ -1,7 +1,7 @@
 import { WsRouter } from '../app/core/types/ws-router.js';
 import type { AppEnvelope } from '../app/types/app-envelope.js';
-import { BuyCardClientRequest } from './messages/buy-card-client-request.js';
-import { UpgradeCardClientRequest } from './messages/upgrade-card-client-request.js';
+import { BuyCardClientRequest } from './messages/requests/buy-card-client-request.js';
+import { UpgradeCardClientRequest } from './messages/requests/upgrade-card-client-request.js';
 import { CardsController } from './controller.js';
 
 export class CardsRouter extends WsRouter<AppEnvelope> {

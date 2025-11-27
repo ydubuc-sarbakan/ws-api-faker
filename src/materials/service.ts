@@ -67,12 +67,13 @@ export class MaterialsService {
 
     async updateMaterial(dto: UpdateMaterialDto): Promise<Material> {
         const material: Material = await this.getMaterial({ id: dto.id });
+        const updatedMaterial: any = { ...material };
 
-        if (dto.amountToModify) material.amount += dto.amountToModify;
+        if (dto.amountToModify) updatedMaterial.amount += dto.amountToModify;
 
         try {
-            const _ = await this.stash.put(material, material.id, true);
-            return material;
+            const _ = await this.stash.put(updatedMaterial, material.id, true);
+            return updatedMaterial as Material;
         } catch (e) {
             throw new Error(`Failed to update material with name: ${(e as Error).message}`);
         }

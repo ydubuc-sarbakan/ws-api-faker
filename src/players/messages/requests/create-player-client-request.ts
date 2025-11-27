@@ -1,4 +1,4 @@
-import { AppClientRequest } from '../../app/types/app-client-response.js';
+import { AppClientRequest } from '../../../app/types/app-client-response.js';
 
 export class CreatePlayerClientRequest extends AppClientRequest {
     static readonly ACTION: string = 'create-player';

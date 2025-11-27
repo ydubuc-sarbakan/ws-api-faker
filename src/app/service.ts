@@ -1,5 +1,5 @@
-import { TestServerResponse } from './messages/test-server-response.js';
-import { TestClientRequest } from './messages/test-client-request.js';
+import { TestServerResponse } from './messages/responses/test-server-response.js';
+import { TestClientRequest } from './messages/requests/test-client-request.js';
 import { Stash } from './managers/stash/stash.js';
 
 export class AppService {

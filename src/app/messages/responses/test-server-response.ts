@@ -1,4 +1,4 @@
-import { AppServerResponse } from '../types/app-server-response.js';
+import { AppServerResponse } from '../../types/app-server-response.js';
 
 export class TestServerResponse extends AppServerResponse {
     static readonly ACTION: string = 'test';

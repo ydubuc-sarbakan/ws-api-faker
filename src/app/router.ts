@@ -1,17 +1,23 @@
 import { WsRouter } from './core/types/ws-router.js';
 import { AppEnvelope } from './types/app-envelope.js';
-import { TestClientRequest } from './messages/test-client-request.js';
+import { TestClientRequest } from './messages/requests/test-client-request.js';
 import { PlayersRouter } from '../players/router.js';
 import { CardsRouter } from '../cards/router.js';
 import { AppController } from './controller.js';
 import { ArcadeRouter } from '../arcade/router.js';
+import { AuthRouter } from '../auth/router.js';
 
 export class AppRouter extends WsRouter<AppEnvelope> {
     private readonly appController: AppController;
 
     constructor(
         appController: AppController = new AppController(),
-        subRouters: WsRouter<AppEnvelope>[] = [new ArcadeRouter(), new CardsRouter(), new PlayersRouter()],
+        subRouters: WsRouter<AppEnvelope>[] = [
+            new ArcadeRouter(),
+            new CardsRouter(),
+            new PlayersRouter(),
+            new AuthRouter(),
+        ],
     ) {
         super(subRouters);
         this.appController = appController;

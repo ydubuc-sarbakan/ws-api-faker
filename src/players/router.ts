@@ -1,9 +1,9 @@
 import { WsRouter } from '../app/core/types/ws-router.js';
 import type { AppEnvelope } from '../app/types/app-envelope.js';
-import { CreatePlayerClientRequest } from './messages/create-player-client-request.js';
-import { GetPlayerClientRequest } from './messages/get-player-client-request.js';
-import { DeletePlayerClientRequest } from './messages/delete-player-client-request.js';
-import { UpdatePlayerClientRequest } from './messages/update-player-client-request.js';
+import { CreatePlayerClientRequest } from './messages/requests/create-player-client-request.js';
+import { GetPlayerClientRequest } from './messages/requests/get-player-client-request.js';
+import { DeletePlayerClientRequest } from './messages/requests/delete-player-client-request.js';
+import { UpdatePlayerClientRequest } from './messages/requests/update-player-client-request.js';
 import { PlayersController } from './controller.js';
 
 export class PlayersRouter extends WsRouter<AppEnvelope> {

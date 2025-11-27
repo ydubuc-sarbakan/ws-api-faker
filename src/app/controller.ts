@@ -1,5 +1,5 @@
 import { AppService } from './service.js';
-import { TestClientRequest } from './messages/test-client-request.js';
+import { TestClientRequest } from './messages/requests/test-client-request.js';
 
 export class AppController {
     private readonly appService: AppService;

@@ -1,6 +1,6 @@
 import { ArcadeService } from './service.js';
-import { PlayerFinishedRaceClientRequest } from './messages/player-finished-race-client-request.js';
-import type { PlayerFinishedCupClientRequest } from './messages/player-finished-cup-client-request.js';
+import { PlayerFinishedRaceClientRequest } from './messages/requets/player-finished-race-client-request.js';
+import type { PlayerFinishedCupClientRequest } from './messages/requets/player-finished-cup-client-request.js';
 import type { PlayerFinishedRaceDto } from './dtos/player-finished-race-dto.js';
 import type { PlayerFinishedCupDto } from './dtos/player-finished-cup-dto.js';
 

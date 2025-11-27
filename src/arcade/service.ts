@@ -12,10 +12,10 @@ import type { CreateMaterialDto } from '../materials/dtos/create-material-dto.js
 import type { CreateCardDto } from '../cards/dtos/create-card-dto.js';
 import { CardGenerator } from '../cards/utils/card-generator.js';
 import type { UpdatePlayerDto } from '../players/dtos/update-player-dto.js';
-import { CardCollectedServerResponse } from '../cards/messages/card-collected-server-response.js';
+import { CardCollectedServerResponse } from '../cards/messages/responses/card-collected-server-response.js';
 import type { Card } from '../cards/models/card.js';
-import { PlayerGainedExperienceServerResponse } from '../players/messages/player-gained-experience-server-response.js';
-import { MaterialCollectedServerResponse } from '../materials/messages/material-collected-server-response.js';
+import { PlayerGainedExperienceServerResponse } from '../players/messages/responses/player-gained-experience-server-response.js';
+import { MaterialCollectedServerResponse } from '../materials/messages/responses/material-collected-server-response.js';
 import { LevelCalculator } from './utils/level-calculator.js';
 
 export class ArcadeService {
@@ -39,12 +39,13 @@ export class ArcadeService {
 
         const player: Player = await this.playersService.getPlayer({ id: dto.playerId });
         const previousLevel: number = player.level;
+        const previousExperience: number = player.experience;
 
         // experience & levels
         const experienceGained: number = ExperienceGenerator.giveExperienceForRacePosition(dto.position);
         const experienceAndLevelsGained = LevelCalculator.determineExperienceAndLevelsGained(player, experienceGained);
 
-        const newLevel: number = player.level;
+        const newLevel: number = previousLevel + (experienceAndLevelsGained[1] as number);
 
         // TODO: get unlocked skins based on level thresholds
 
@@ -61,6 +62,12 @@ export class ArcadeService {
                 const response: PlayerGainedExperienceServerResponse = new PlayerGainedExperienceServerResponse(
                     player.id,
                     experienceGained,
+                    previousLevel,
+                    newLevel,
+                    previousExperience,
+                    experienceAndLevelsGained[0] as number,
+                    LevelCalculator.levelThreshold(previousLevel),
+                    LevelCalculator.levelThreshold(newLevel),
                 );
                 responses.push(response);
             }),
@@ -102,10 +109,14 @@ export class ArcadeService {
         const responses: AppServerResponse[] = [];
 
         const player: Player = await this.playersService.getPlayer({ id: dto.playerId });
+        const previousLevel: number = player.level;
+        const previousExperience: number = player.experience;
 
         // experience
-        const experienceGained: number = ExperienceGenerator.giveExperienceForCupPosition(dto.position);
+        const experienceGained: number = ExperienceGenerator.giveExperienceForRacePosition(dto.position);
         const experienceAndLevelsGained = LevelCalculator.determineExperienceAndLevelsGained(player, experienceGained);
+
+        const newLevel: number = previousLevel + (experienceAndLevelsGained[1] as number);
 
         const updatePlayerDto: UpdatePlayerDto = {
             id: player.id,
@@ -120,6 +131,12 @@ export class ArcadeService {
                 const response: PlayerGainedExperienceServerResponse = new PlayerGainedExperienceServerResponse(
                     player.id,
                     experienceGained,
+                    previousLevel,
+                    newLevel,
+                    previousExperience,
+                    experienceAndLevelsGained[0] as number,
+                    LevelCalculator.levelThreshold(previousLevel),
+                    LevelCalculator.levelThreshold(newLevel),
                 );
                 responses.push(response);
             }),

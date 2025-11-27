@@ -1,8 +1,8 @@
 import { WsRouter } from '../app/core/types/ws-router.js';
 import type { AppEnvelope } from '../app/types/app-envelope.js';
-import { PlayerFinishedRaceClientRequest } from './messages/player-finished-race-client-request.js';
+import { PlayerFinishedRaceClientRequest } from './messages/requets/player-finished-race-client-request.js';
 import { ArcadeController } from './controller.js';
-import { PlayerFinishedCupClientRequest } from './messages/player-finished-cup-client-request.js';
+import { PlayerFinishedCupClientRequest } from './messages/requets/player-finished-cup-client-request.js';
 
 export class ArcadeRouter extends WsRouter<AppEnvelope> {
     private readonly arcadeController: ArcadeController;

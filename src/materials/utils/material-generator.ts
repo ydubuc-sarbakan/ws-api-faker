@@ -3,12 +3,18 @@ import { MaterialType } from '../enums/material-type.js';
 
 export class MaterialGenerator {
     private static materials: string[][] = [
-        ['Mickey Emblem', MaterialType.MICKEY_EMBLEM],
-        ['Minnie Emblem', MaterialType.MINNIE_EMBLEM],
-        ['Donald Emblem', MaterialType.DONALD_EMBLEM],
+        ['2001', 'Mickey Emblem', MaterialType.MICKEY_EMBLEM],
+        ['20002', 'Minnie Emblem', MaterialType.MINNIE_EMBLEM],
+        ['20003', 'Donald Emblem', MaterialType.DONALD_EMBLEM],
+        ['20004', 'Joy Emblem', MaterialType.JOY_EMBLEM],
+        ['20005', 'Sadness Emblem', MaterialType.SADNESS_EMBLEM],
+        ['20006', 'Anxiety Emblem', MaterialType.ANXIETY_EMBLEM],
+        ['20007', 'Vanellope Emblem', MaterialType.VANELLOPE_EMBLEM],
+        ['20008', 'Ralph Emblem', MaterialType.RALPH_EMBLEM],
+        ['20009', 'Calhoun Emblem', MaterialType.CALHOUN_EMBLEM],
     ];
 
-    private static flower: string[] = ['Flower', MaterialType.FLOWER];
+    private static flower: string[] = ['123456', 'Flower', MaterialType.FLOWER];
 
     static generateCreateMaterialDtoForRace(position: number, playerId: string): CreateMaterialDto {
         let material: string[];
@@ -24,8 +30,9 @@ export class MaterialGenerator {
 
         const dto: CreateMaterialDto = {
             playerId,
-            name: material[0] as string,
-            type: material[1] as string,
+            gameDefinitionId: material[0] as string,
+            name: material[1] as string,
+            type: material[2] as string,
             amount,
         };
 
@@ -46,8 +53,9 @@ export class MaterialGenerator {
 
         const dto: CreateMaterialDto = {
             playerId,
-            name: material[0] as string,
-            type: material[1] as string,
+            gameDefinitionId: material[0] as string,
+            name: material[1] as string,
+            type: material[2] as string,
             amount,
         };
 
