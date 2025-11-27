@@ -62,8 +62,9 @@ export class CardsService {
             unlockedSkinsToAdd: undefined,
         };
 
-        material.amount = material.amount - dto.upgradeMaterialAmount;
-        if (material.amount > 0) {
+        const newAmount = material.amount - dto.upgradeMaterialAmount;
+
+        if (newAmount > 0) {
             await this.materialsService.updateMaterial({ id: material.id, amountToModify: -dto.upgradeMaterialAmount });
         } else {
             await this.materialsService.deleteMaterial({ id: material.id });
