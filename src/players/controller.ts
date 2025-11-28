@@ -8,6 +8,7 @@ import type { GetPlayerDto } from './dtos/get-player-dto.js';
 import type { UpdatePlayerDto } from './dtos/update-player-dto.js';
 import type { DeletePlayerDto } from './dtos/delete-player-dto.js';
 import { GetPlayerServerResponse } from './messages/responses/get-player-server-response.js';
+import { Cups } from '../arcade/constants/cups.js';
 
 export class PlayersController {
     private readonly playersService: PlayersService;
@@ -22,7 +23,7 @@ export class PlayersController {
             experience: 0,
             level: 1,
             unlockedSkins: [],
-            unlockedCups: [],
+            unlockedCups: [Cups.MICKEYS_CUP.id],
         };
 
         const _ = await this.playersService.createPlayer(dto);

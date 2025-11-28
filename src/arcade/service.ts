@@ -17,6 +17,9 @@ import type { Card } from '../cards/models/card.js';
 import { PlayerGainedExperienceServerResponse } from '../players/messages/responses/player-gained-experience-server-response.js';
 import { MaterialCollectedServerResponse } from '../materials/messages/responses/material-collected-server-response.js';
 import { LevelCalculator } from './utils/level-calculator.js';
+import { RewardSource } from './enums/reward-source.js';
+import { ALL_CUPS, type Cup, Cups } from './constants/cups.js';
+import { PlayerUnlockedCupServerResponse } from '../players/messages/responses/player-unlocked-cup-server-response.js';
 
 export class ArcadeService {
     private readonly playersService: PlayersService;
@@ -45,15 +48,15 @@ export class ArcadeService {
         const experienceGained: number = ExperienceGenerator.giveExperienceForRacePosition(dto.position);
         const experienceAndLevelsGained = LevelCalculator.determineExperienceAndLevelsGained(player, experienceGained);
 
-        const newLevel: number = previousLevel + (experienceAndLevelsGained[1] as number);
-
-        // TODO: get unlocked skins based on level thresholds
+        const newExperience: number = experienceAndLevelsGained[0] as number;
+        const levelsGained: number = experienceAndLevelsGained[1] as number;
+        const newLevel: number = previousLevel + levelsGained;
 
         const updatePlayerDto: UpdatePlayerDto = {
             id: player.id,
             name: undefined,
-            experience: experienceAndLevelsGained[0],
-            levelsToAdd: experienceAndLevelsGained[1],
+            experience: newExperience,
+            levelsToAdd: levelsGained,
             unlockedSkinsToAdd: undefined,
             unlockedCupsToAdd: undefined,
         };
@@ -74,30 +77,20 @@ export class ArcadeService {
         );
 
         // material
-        const materialGained: CreateMaterialDto = MaterialGenerator.generateCreateMaterialDtoForRace(
+        const createMaterialDto: CreateMaterialDto = MaterialGenerator.generateCreateMaterialDtoForRace(
             dto.position,
             dto.playerId,
         );
         operations.push(
-            this.materialsService.giveMaterial(materialGained).then((material: Material) => {
+            this.materialsService.giveMaterial(createMaterialDto).then((material: Material) => {
                 const response: MaterialCollectedServerResponse = new MaterialCollectedServerResponse(
                     material,
-                    materialGained.amount,
+                    createMaterialDto.amount,
+                    RewardSource.RACE_FINISH,
                 );
                 responses.push(response);
             }),
         );
-
-        // // card
-        // if (dto.position == 1) {
-        //     const createCardDto: CreateCardDto = CardGenerator.generateCreateCardDto();
-        //     operations.push(
-        //         this.cardsService.createCard(createCardDto).then((card: Card) => {
-        //             const response: CardCollectedServerResponse = new CardCollectedServerResponse(card);
-        //             responses.push(response);
-        //         }),
-        //     );
-        // }
 
         await Promise.all(operations);
 
@@ -112,19 +105,39 @@ export class ArcadeService {
         const previousLevel: number = player.level;
         const previousExperience: number = player.experience;
 
-        // experience
+        // experience & levels
         const experienceGained: number = ExperienceGenerator.giveExperienceForRacePosition(dto.position);
         const experienceAndLevelsGained = LevelCalculator.determineExperienceAndLevelsGained(player, experienceGained);
 
-        const newLevel: number = previousLevel + (experienceAndLevelsGained[1] as number);
+        const newExperience: number = experienceAndLevelsGained[0] as number;
+        const levelsGained: number = experienceAndLevelsGained[1] as number;
+        const newLevel: number = previousLevel + levelsGained;
+
+        // rewards
+        let cupsUnlocked: string[] | undefined = undefined;
+        const cupsLeftToUnlock = ALL_CUPS.filter((val) => !player.unlockedCups.includes(val.id));
+        // const didUnlockCup: boolean = Math.random() < 0.25;
+        const didUnlockCup = true;
+        if (cupsLeftToUnlock.length > 0 && didUnlockCup) {
+            const cupToUnlock = cupsLeftToUnlock[Math.floor(Math.random() * cupsLeftToUnlock.length)] as Cup;
+            cupsUnlocked = [];
+            cupsUnlocked.push(cupToUnlock.id);
+
+            const response: PlayerUnlockedCupServerResponse = new PlayerUnlockedCupServerResponse(
+                player.id,
+                cupToUnlock.id,
+                RewardSource.CUP_FINISH,
+            );
+            responses.push(response);
+        }
 
         const updatePlayerDto: UpdatePlayerDto = {
             id: player.id,
             name: undefined,
-            experience: experienceAndLevelsGained[0],
-            levelsToAdd: experienceAndLevelsGained[1],
+            experience: newExperience,
+            levelsToAdd: levelsGained,
             unlockedSkinsToAdd: undefined,
-            unlockedCupsToAdd: undefined,
+            unlockedCupsToAdd: cupsUnlocked,
         };
         operations.push(
             this.playersService.updatePlayer(updatePlayerDto).then((player: Player) => {
@@ -143,15 +156,16 @@ export class ArcadeService {
         );
 
         // material
-        const materialGained: CreateMaterialDto = MaterialGenerator.generateCreateMaterialDtoForCup(
+        const createMaterialDto: CreateMaterialDto = MaterialGenerator.generateCreateMaterialDtoForCup(
             dto.position,
             dto.playerId,
         );
         operations.push(
-            this.materialsService.giveMaterial(materialGained).then((material: Material) => {
+            this.materialsService.giveMaterial(createMaterialDto).then((material: Material) => {
                 const response: MaterialCollectedServerResponse = new MaterialCollectedServerResponse(
                     material,
-                    materialGained.amount,
+                    createMaterialDto.amount,
+                    RewardSource.CUP_FINISH,
                 );
                 responses.push(response);
             }),
@@ -161,7 +175,10 @@ export class ArcadeService {
         const createCardDto: CreateCardDto = CardGenerator.generateCreateCardDto();
         operations.push(
             this.cardsService.createCard(createCardDto).then((card: Card) => {
-                const response: CardCollectedServerResponse = new CardCollectedServerResponse(card);
+                const response: CardCollectedServerResponse = new CardCollectedServerResponse(
+                    card,
+                    RewardSource.CUP_FINISH,
+                );
                 responses.push(response);
             }),
         );

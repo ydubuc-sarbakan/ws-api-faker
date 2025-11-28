@@ -10,8 +10,9 @@ export class CardCollectedServerResponse extends AppServerResponse {
     readonly rarity: string;
     readonly experience: number;
     readonly unlockedSkins: string[];
+    readonly source: string;
 
-    constructor(card: Card) {
+    constructor(card: Card, source: string) {
         super(CardCollectedServerResponse.ACTION);
         this.id = card.id;
         this.name = card.name;
@@ -19,5 +20,6 @@ export class CardCollectedServerResponse extends AppServerResponse {
         this.rarity = card.rarity;
         this.experience = card.experience;
         this.unlockedSkins = card.unlockedSkins;
+        this.source = source;
     }
 }

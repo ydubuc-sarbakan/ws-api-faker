@@ -1,3 +1,1 @@
-export class RewardCalculator {
-    static getRewardForLevel(level: number) {}
-}
+export class RewardCalculator {}

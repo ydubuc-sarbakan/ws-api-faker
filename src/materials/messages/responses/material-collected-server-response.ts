@@ -10,8 +10,9 @@ export class MaterialCollectedServerResponse extends AppServerResponse {
     readonly name: string;
     readonly type: string;
     readonly amount: number;
+    readonly source: string;
 
-    constructor(material: Material, amount: number) {
+    constructor(material: Material, amount: number, source: string) {
         super(MaterialCollectedServerResponse.ACTION);
         this.id = material.id;
         this.playerId = material.playerId;
@@ -19,5 +20,6 @@ export class MaterialCollectedServerResponse extends AppServerResponse {
         this.name = material.name;
         this.type = material.type;
         this.amount = amount;
+        this.source = source;
     }
 }

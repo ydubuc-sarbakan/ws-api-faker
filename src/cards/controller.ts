@@ -6,6 +6,7 @@ import type { UpgradeCardDto } from './dtos/upgrade-card-dto.js';
 import { CardGenerator } from './utils/card-generator.js';
 import type { Card } from './models/card.js';
 import { CardCollectedServerResponse } from './messages/responses/card-collected-server-response.js';
+import { RewardSource } from '../arcade/enums/reward-source.js';
 
 export class CardsController {
     private readonly cardsService: CardsService;
@@ -17,7 +18,7 @@ export class CardsController {
     async handleBuyCardClientRequest(request: BuyCardClientRequest, socket: WebSocket): Promise<void> {
         const dto: CreateCardDto = CardGenerator.generateCreateCardDto();
         const card: Card = await this.cardsService.createCard(dto);
-        const response: CardCollectedServerResponse = new CardCollectedServerResponse(card);
+        const response: CardCollectedServerResponse = new CardCollectedServerResponse(card, RewardSource.BUY);
         socket.send(response.serialize());
     }
 

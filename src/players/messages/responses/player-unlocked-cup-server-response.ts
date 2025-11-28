@@ -5,10 +5,12 @@ export class PlayerUnlockedCupServerResponse extends AppServerResponse {
 
     readonly playerId: string;
     readonly cupId: string;
+    readonly source: string;
 
-    constructor(playerId: string, cupId: string) {
+    constructor(playerId: string, cupId: string, source: string) {
         super(PlayerUnlockedCupServerResponse.ACTION);
         this.playerId = playerId;
         this.cupId = cupId;
+        this.source = source;
     }
 }
