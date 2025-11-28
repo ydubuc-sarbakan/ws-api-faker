@@ -22,7 +22,7 @@ export class ArcadeController {
 
         const responses = await this.arcadeService.onPlayerFinishedRace(dto);
         for (const response of responses) {
-            socket.send(JSON.stringify(response));
+            socket.send(response.serialize());
         }
     }
 
@@ -35,6 +35,9 @@ export class ArcadeController {
             position: request.position,
         };
 
-        await this.arcadeService.onPlayerFinishedCup(dto);
+        const responses = await this.arcadeService.onPlayerFinishedCup(dto);
+        for (const response of responses) {
+            socket.send(response.serialize());
+        }
     }
 }

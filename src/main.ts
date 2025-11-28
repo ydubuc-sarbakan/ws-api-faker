@@ -11,7 +11,7 @@ function main(): void {
     stashManager.addStash(new Stash('materials'), 'materials');
     stashManager.addStash(new Stash('players'), 'players');
 
-    const _ = new WsClient({ port: WsConfig.PORT }, new AppRouter());
+    const _ = new WsClient({ host: '0.0.0.0', port: WsConfig.PORT }, new AppRouter());
 }
 
 main();

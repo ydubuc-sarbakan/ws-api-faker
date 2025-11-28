@@ -24,6 +24,8 @@ export class AppRouter extends WsRouter<AppEnvelope> {
     }
 
     handled(requestEnvelope: AppEnvelope, socket: WebSocket): boolean {
+        console.log(requestEnvelope.action);
+
         switch (requestEnvelope.action) {
             case TestClientRequest.ACTION: {
                 const request = requestEnvelope.openAs(TestClientRequest);

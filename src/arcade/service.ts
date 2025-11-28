@@ -88,16 +88,16 @@ export class ArcadeService {
             }),
         );
 
-        // card
-        if (dto.position == 1) {
-            const createCardDto: CreateCardDto = CardGenerator.generateCreateCardDto();
-            operations.push(
-                this.cardsService.createCard(createCardDto).then((card: Card) => {
-                    const response: CardCollectedServerResponse = new CardCollectedServerResponse(card);
-                    responses.push(response);
-                }),
-            );
-        }
+        // // card
+        // if (dto.position == 1) {
+        //     const createCardDto: CreateCardDto = CardGenerator.generateCreateCardDto();
+        //     operations.push(
+        //         this.cardsService.createCard(createCardDto).then((card: Card) => {
+        //             const response: CardCollectedServerResponse = new CardCollectedServerResponse(card);
+        //             responses.push(response);
+        //         }),
+        //     );
+        // }
 
         await Promise.all(operations);
 
@@ -158,15 +158,13 @@ export class ArcadeService {
         );
 
         // card
-        if (dto.position == 1) {
-            const createCardDto: CreateCardDto = CardGenerator.generateCreateCardDto();
-            operations.push(
-                this.cardsService.createCard(createCardDto).then((card: Card) => {
-                    const response: CardCollectedServerResponse = new CardCollectedServerResponse(card);
-                    responses.push(response);
-                }),
-            );
-        }
+        const createCardDto: CreateCardDto = CardGenerator.generateCreateCardDto();
+        operations.push(
+            this.cardsService.createCard(createCardDto).then((card: Card) => {
+                const response: CardCollectedServerResponse = new CardCollectedServerResponse(card);
+                responses.push(response);
+            }),
+        );
 
         await Promise.all(operations);
 
