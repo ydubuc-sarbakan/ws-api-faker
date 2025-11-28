@@ -2,7 +2,6 @@ import type { AppEnvelope } from '../app/types/app-envelope.js';
 import { WsRouter } from '../app/core/types/ws-router.js';
 import { AuthController } from './controller.js';
 import { GetQrCodeClientRequest } from './messages/requests/get-qr-code-client-request.js';
-import { QrCodeScanCheatClientRequest } from './messages/requests/qr-code-scan-cheat-client-request.js';
 
 export class AuthRouter extends WsRouter<AppEnvelope> {
     private readonly authController: AuthController;
@@ -22,11 +21,6 @@ export class AuthRouter extends WsRouter<AppEnvelope> {
             case GetQrCodeClientRequest.ACTION: {
                 const request = requestEnvelope.openAs(GetQrCodeClientRequest);
                 this.tryHandling(() => this.authController.handleGetQrCodeClientRequest(request, socket));
-                return true;
-            }
-            case QrCodeScanCheatClientRequest.ACTION: {
-                const request = requestEnvelope.openAs(QrCodeScanCheatClientRequest);
-                this.tryHandling(() => this.authController.handleQrCodeScanCheatClientRequest(request, socket));
                 return true;
             }
         }

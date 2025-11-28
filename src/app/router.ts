@@ -6,6 +6,7 @@ import { CardsRouter } from '../cards/router.js';
 import { AppController } from './controller.js';
 import { ArcadeRouter } from '../arcade/router.js';
 import { AuthRouter } from '../auth/router.js';
+import { CheatsRouter } from '../cheats/router.js';
 
 export class AppRouter extends WsRouter<AppEnvelope> {
     private readonly appController: AppController;
@@ -17,6 +18,7 @@ export class AppRouter extends WsRouter<AppEnvelope> {
             new CardsRouter(),
             new PlayersRouter(),
             new AuthRouter(),
+            new CheatsRouter(),
         ],
     ) {
         super(subRouters);
