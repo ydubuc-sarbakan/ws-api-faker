@@ -24,12 +24,11 @@ export class CheatsRouter extends WsRouter<AppEnvelope> {
                 this.tryHandling(() => this.cheatsController.handleQrCodeScanCheatClientRequest(request, socket));
                 return true;
             }
-            case CreatePlayerCheatClientRequest.ACTION:
-                {
-                }
+            case CreatePlayerCheatClientRequest.ACTION: {
                 const request = requestEnvelope.openAs(CreatePlayerCheatClientRequest);
                 this.tryHandling(() => this.cheatsController.handleCreatePlayerCheatClientRequest(request, socket));
                 return true;
+            }
         }
 
         return false;

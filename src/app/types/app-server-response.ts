@@ -9,6 +9,7 @@ export abstract class AppServerResponse extends WsServerResponse {
     }
 
     serialize(): string {
+        console.log('server responding with', this.action);
         return JSON.stringify(this);
     }
 }
