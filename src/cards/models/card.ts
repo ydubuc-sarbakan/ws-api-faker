@@ -1,27 +1,27 @@
 export class Card {
-    readonly id: string;
-    readonly name: string;
-    readonly racerId: string;
-    readonly rarity: string;
-    readonly experience: number;
-    readonly level: number;
-    readonly unlockedSkins: string[];
+    readonly cardId: string;
+    cardName: string;
+    cfgId: number;
+    star: number;
+    skinList: string[];
+    carList: string[];
+    status: number;
 
     constructor(
-        id: string,
-        name: string,
-        racerId: string,
-        rarity: string,
-        experience: number,
-        level: number,
-        unlockedSkins: string[],
+        cardId: string,
+        cardName: string,
+        cfgId: number,
+        star: number,
+        skinList: string[],
+        carList: string[],
+        status: number,
     ) {
-        this.id = id;
-        this.name = name;
-        this.racerId = racerId;
-        this.rarity = rarity;
-        this.experience = experience;
-        this.level = level;
-        this.unlockedSkins = unlockedSkins;
+        this.cardId = cardId;
+        this.cardName = cardName;
+        this.cfgId = cfgId;
+        this.star = star;
+        this.skinList = skinList;
+        this.carList = carList;
+        this.status = status;
     }
 }

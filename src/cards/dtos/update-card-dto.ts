@@ -1,9 +1,9 @@
 export class UpdateCardDto {
-    readonly id: string = '';
-    readonly name: string | undefined = undefined;
-    readonly racerId: string | undefined = undefined;
-    readonly rarity: string | undefined = undefined;
-    readonly experience: number | undefined = undefined;
-    readonly levelsToAdd: number | undefined = undefined;
-    readonly unlockedSkinsToAdd: string[] | undefined = undefined;
+    readonly cardId: string = '';
+    readonly cardName: string | undefined = undefined;
+    readonly cfgId: number | undefined = undefined;
+    readonly star: number | undefined = undefined;
+    readonly skinList: string[] | undefined = undefined;
+    readonly carList: string[] | undefined = undefined;
+    readonly status: number | undefined = undefined;
 }

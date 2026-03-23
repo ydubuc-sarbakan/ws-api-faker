@@ -1,15 +1,17 @@
-export class CreatePlayerDto {
-    readonly name: string;
-    readonly experience: number;
-    readonly level: number;
-    readonly unlockedSkins: string[];
-    readonly unlockedCups: string[];
+import type { TrackInfo } from '../../arcade/types/track-info.js';
 
-    constructor(name: string, experience: number, level: number, unlockedSkins: string[], unlockedCups: string[]) {
-        this.name = name;
-        this.experience = experience;
-        this.level = level;
-        this.unlockedSkins = unlockedSkins;
-        this.unlockedCups = unlockedCups;
+export class CreatePlayerDto {
+    readonly nickname: string;
+    readonly avatarUrl: string;
+    readonly lv: number;
+    readonly exp: number;
+    readonly trackList: TrackInfo[];
+
+    constructor(nickname: string, avatarUrl: string, lv: number, exp: number, trackList: TrackInfo[]) {
+        this.nickname = nickname;
+        this.avatarUrl = avatarUrl;
+        this.lv = lv;
+        this.exp = exp;
+        this.trackList = trackList;
     }
 }

@@ -1,9 +1,12 @@
-import { CheatsService } from './service.js';
-import type { QrCodeScanCheatClientRequest } from './messages/requests/qr-code-scan-cheat-client-request.js';
-import { PlayersService } from '../players/service.js';
-import { GetPlayerServerResponse } from '../players/messages/responses/get-player-server-response.js';
 import { CreatePlayerDto } from '../players/dtos/create-player-dto.js';
+import {
+    ReturnPlayerInfoServerResponse,
+    ReturnPlayerInfoServerResponseData,
+} from '../players/messages/responses/return-player-info-response.js';
+import { PlayersService } from '../players/service.js';
 import type { CreatePlayerCheatClientRequest } from './messages/requests/create-player-cheat-client-request.js';
+import type { QrCodeScanCheatClientRequest } from './messages/requests/qr-code-scan-cheat-client-request.js';
+import { CheatsService } from './service.js';
 
 export class CheatsController {
     private readonly cheatsService: CheatsService;
@@ -18,8 +21,16 @@ export class CheatsController {
     }
 
     async handleQrCodeScanCheatClientRequest(request: QrCodeScanCheatClientRequest, socket: WebSocket): Promise<void> {
-        const player = await this.playersService.getPlayer({ id: request.playerId });
-        const response = new GetPlayerServerResponse(player);
+        const player = await this.playersService.getPlayer({ roleId: request.roleId });
+        const playerInfo = new ReturnPlayerInfoServerResponseData(
+            player.roleId,
+            player.nickname,
+            player.avatarUrl,
+            player.lv,
+            player.exp,
+            player.trackList,
+        );
+        const response = new ReturnPlayerInfoServerResponse(playerInfo);
         socket.send(response.serialize());
     }
 
@@ -28,14 +39,23 @@ export class CheatsController {
         socket: WebSocket,
     ): Promise<void> {
         const createPlayerDto: CreatePlayerDto = new CreatePlayerDto(
-            request.name,
-            request.experience,
-            request.level,
-            request.unlockedSkins,
-            request.unlockedCups,
+            request.nickname,
+            request.avatarUrl,
+            request.lv,
+            request.exp,
+            [],
         );
         const player = await this.playersService.createPlayer(createPlayerDto);
-        const response = new GetPlayerServerResponse(player);
+        const response = new ReturnPlayerInfoServerResponse(
+            new ReturnPlayerInfoServerResponseData(
+                player.roleId,
+                player.nickname,
+                player.avatarUrl,
+                player.lv,
+                player.exp,
+                player.trackList,
+            ),
+        );
         socket.send(response.serialize());
     }
 }

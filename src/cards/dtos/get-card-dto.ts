@@ -1,7 +1,7 @@
 export class GetCardDto {
-    readonly id: string = '';
+    readonly cardId: string = '';
 
-    constructor(id: string) {
-        this.id = id;
+    constructor(cardId: string) {
+        this.cardId = cardId;
     }
 }

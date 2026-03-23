@@ -1,12 +1,12 @@
-import type { BuyCardClientRequest } from './messages/requests/buy-card-client-request.js';
-import { CardsService } from './service.js';
 import type { CreateCardDto } from './dtos/create-card-dto.js';
-import { UpgradeCardClientRequest } from './messages/requests/upgrade-card-client-request.js';
-import type { UpgradeCardDto } from './dtos/upgrade-card-dto.js';
-import { CardGenerator } from './utils/card-generator.js';
+import { UpdateCardDto } from './dtos/update-card-dto.js';
+import { ActivateCardClientRequest } from './messages/requests/activate-card-client-request.js';
+import type { CheckCardClientRequest } from './messages/requests/check-card-client-request.js';
+import type { InsertCardClientRequest } from './messages/requests/insert-card-client-request.js';
+import { CheckCardServerResponse } from './messages/responses/check-card-server-response.js';
+import { InsertCardServerResponse } from './messages/responses/insert-card-server-response.js';
 import type { Card } from './models/card.js';
-import { CardCollectedServerResponse } from './messages/responses/card-collected-server-response.js';
-import { RewardSource } from '../arcade/enums/reward-source.js';
+import { CardsService } from './service.js';
 
 export class CardsController {
     private readonly cardsService: CardsService;
@@ -15,20 +15,46 @@ export class CardsController {
         this.cardsService = cardsService;
     }
 
-    async handleBuyCardClientRequest(request: BuyCardClientRequest, socket: WebSocket): Promise<void> {
-        const dto: CreateCardDto = CardGenerator.generateCreateCardDto();
-        const card: Card = await this.cardsService.createCard(dto);
-        const response: CardCollectedServerResponse = new CardCollectedServerResponse(card, RewardSource.BUY);
+    async handleActivateCard(request: ActivateCardClientRequest, socket: WebSocket): Promise<void> {
+        const updateCardDto: UpdateCardDto = {
+            cardId: request.cardId,
+            status: 1,
+            cardName: undefined,
+            cfgId: undefined,
+            star: undefined,
+            skinList: undefined,
+            carList: undefined,
+        };
+
+        await this.cardsService.updateCard(updateCardDto);
+    }
+
+    async handleCheckCard(request: CheckCardClientRequest, socket: WebSocket): Promise<void> {
+        const card = await this.cardsService.getCard({ cardId: request.cardId });
+        const response = new CheckCardServerResponse(card);
         socket.send(response.serialize());
     }
 
-    async handleUpgradeCardClientRequest(request: UpgradeCardClientRequest, socket: WebSocket): Promise<void> {
-        const dto: UpgradeCardDto = {
-            id: request.id,
-            upgradeMaterialId: request.upgradeMaterialId,
-            upgradeMaterialAmount: request.upgradeMaterialAmount,
-        };
+    async handleInsertCard(request: InsertCardClientRequest, socket: WebSocket): Promise<void> {
+        let card: Card;
 
-        await this.cardsService.upgradeCard(dto);
+        try {
+            card = await this.cardsService.getCard({ cardId: request.cardId });
+        } catch (e) {
+            const createCardDto: CreateCardDto = {
+                cardId: request.cardId,
+                cardName: "Don't know where they get the card name from",
+                cfgId: 42,
+                star: 1,
+                skinList: [],
+                carList: [],
+                status: 0,
+            };
+
+            card = await this.cardsService.createCard(createCardDto);
+        }
+
+        const response = new InsertCardServerResponse(card);
+        socket.send(response.serialize());
     }
 }

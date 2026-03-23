@@ -1,7 +1,7 @@
 export class GetPlayerDto {
-    readonly id: string;
+    readonly roleId: string;
 
-    constructor(id: string) {
-        this.id = id;
+    constructor(roleId: string) {
+        this.roleId = roleId;
     }
 }

@@ -1,8 +1,9 @@
 import { WsRouter } from '../app/core/types/ws-router.js';
 import type { AppEnvelope } from '../app/types/app-envelope.js';
-import { BuyCardClientRequest } from './messages/requests/buy-card-client-request.js';
-import { UpgradeCardClientRequest } from './messages/requests/upgrade-card-client-request.js';
 import { CardsController } from './controller.js';
+import { ActivateCardClientRequest } from './messages/requests/activate-card-client-request.js';
+import { CheckCardClientRequest } from './messages/requests/check-card-client-request.js';
+import { InsertCardClientRequest } from './messages/requests/insert-card-client-request.js';
 
 export class CardsRouter extends WsRouter<AppEnvelope> {
     private readonly cardsController: CardsController;
@@ -19,14 +20,19 @@ export class CardsRouter extends WsRouter<AppEnvelope> {
 
     handled(requestEnvelope: AppEnvelope, socket: WebSocket): boolean {
         switch (requestEnvelope.action) {
-            case BuyCardClientRequest.ACTION: {
-                const request = requestEnvelope.openAs(BuyCardClientRequest);
-                this.tryHandling(() => this.cardsController.handleBuyCardClientRequest(request, socket));
+            case ActivateCardClientRequest.ACTION: {
+                const request = requestEnvelope.openAs(ActivateCardClientRequest);
+                this.cardsController.handleActivateCard(request, socket);
                 return true;
             }
-            case UpgradeCardClientRequest.ACTION: {
-                const request = requestEnvelope.openAs(UpgradeCardClientRequest);
-                this.tryHandling(() => this.cardsController.handleUpgradeCardClientRequest(request, socket));
+            case CheckCardClientRequest.ACTION: {
+                const request = requestEnvelope.openAs(CheckCardClientRequest);
+                this.cardsController.handleCheckCard(request, socket);
+                return true;
+            }
+            case InsertCardClientRequest.ACTION: {
+                const request = requestEnvelope.openAs(InsertCardClientRequest);
+                this.cardsController.handleInsertCard(request, socket);
                 return true;
             }
         }

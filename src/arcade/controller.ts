@@ -1,8 +1,5 @@
+import type { TrackSettlementClientRequest } from './messages/requests/track-settlement-client-request.js';
 import { ArcadeService } from './service.js';
-import { PlayerFinishedRaceClientRequest } from './messages/requets/player-finished-race-client-request.js';
-import type { PlayerFinishedCupClientRequest } from './messages/requets/player-finished-cup-client-request.js';
-import type { PlayerFinishedRaceDto } from './dtos/player-finished-race-dto.js';
-import type { PlayerFinishedCupDto } from './dtos/player-finished-cup-dto.js';
 
 export class ArcadeController {
     private readonly arcadeService: ArcadeService;
@@ -11,33 +8,8 @@ export class ArcadeController {
         this.arcadeService = arcadeService;
     }
 
-    async handlePlayerFinishedRaceClientRequest(
-        request: PlayerFinishedRaceClientRequest,
-        socket: WebSocket,
-    ): Promise<void> {
-        const dto: PlayerFinishedRaceDto = {
-            playerId: request.playerId,
-            position: request.position,
-        };
-
-        const responses = await this.arcadeService.onPlayerFinishedRace(dto);
-        for (const response of responses) {
-            socket.send(response.serialize());
-        }
-    }
-
-    async handlePlayerFinishedCupClientRequest(
-        request: PlayerFinishedCupClientRequest,
-        socket: WebSocket,
-    ): Promise<void> {
-        const dto: PlayerFinishedCupDto = {
-            playerId: request.playerId,
-            position: request.position,
-        };
-
-        const responses = await this.arcadeService.onPlayerFinishedCup(dto);
-        for (const response of responses) {
-            socket.send(response.serialize());
-        }
+    async handleTrackSettlement(request: TrackSettlementClientRequest, socket: WebSocket): Promise<void> {
+        const response = await this.arcadeService.handleTrackSettlement(request);
+        socket.send(response.serialize());
     }
 }

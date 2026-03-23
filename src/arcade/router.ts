@@ -1,8 +1,7 @@
 import { WsRouter } from '../app/core/types/ws-router.js';
 import type { AppEnvelope } from '../app/types/app-envelope.js';
-import { PlayerFinishedRaceClientRequest } from './messages/requets/player-finished-race-client-request.js';
 import { ArcadeController } from './controller.js';
-import { PlayerFinishedCupClientRequest } from './messages/requets/player-finished-cup-client-request.js';
+import { TrackSettlementClientRequest } from './messages/requests/track-settlement-client-request.js';
 
 export class ArcadeRouter extends WsRouter<AppEnvelope> {
     private readonly arcadeController: ArcadeController;
@@ -19,14 +18,9 @@ export class ArcadeRouter extends WsRouter<AppEnvelope> {
 
     handled(requestEnvelope: AppEnvelope, socket: WebSocket): boolean {
         switch (requestEnvelope.action) {
-            case PlayerFinishedRaceClientRequest.ACTION: {
-                const request = requestEnvelope.openAs(PlayerFinishedRaceClientRequest);
-                this.tryHandling(() => this.arcadeController.handlePlayerFinishedRaceClientRequest(request, socket));
-                return true;
-            }
-            case PlayerFinishedCupClientRequest.ACTION: {
-                const request = requestEnvelope.openAs(PlayerFinishedCupClientRequest);
-                this.tryHandling(() => this.arcadeController.handlePlayerFinishedCupClientRequest(request, socket));
+            case TrackSettlementClientRequest.ACTION: {
+                const request = requestEnvelope.openAs(TrackSettlementClientRequest);
+                this.tryHandling(() => this.arcadeController.handleTrackSettlement(request, socket));
                 return true;
             }
             default:
