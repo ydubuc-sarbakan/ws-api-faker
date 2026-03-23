@@ -1,4 +1,4 @@
-import { writeFile, readFile, unlink, mkdir, rmdir } from 'fs/promises';
+import { mkdir, readFile, rmdir, unlink, writeFile } from 'fs/promises';
 
 export class Stash {
     private static ROOT_DIR: string = './data';

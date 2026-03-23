@@ -16,7 +16,7 @@ export class AuthController {
     }
 
     async handleGetQrCodeClientRequest(request: GetQrCodeClientRequest, socket: WebSocket): Promise<void> {
-        const qrCodeUrl = await this.authService.generateQrCodeUrl(request.machineId);
+        const qrCodeUrl = await this.authService.generateQrCodeUrl(request.machineId, socket);
         const qrCodeData = new GetQrCodeServerResponseData(qrCodeUrl, Date.now() + 5 * 60 * 1000); // QR code expires in 5 minutes
         const response = new GetQrCodeServerResponse(qrCodeData);
         socket.send(JSON.stringify(response));
