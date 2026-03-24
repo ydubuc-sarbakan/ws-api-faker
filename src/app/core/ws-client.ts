@@ -112,7 +112,7 @@ export class WsClient {
             }
         });
 
-        server.listen(9003, '192.168.50.36', () => {
+        server.listen(9003, '0.0.0.0', () => {
             console.log('HTTP server listening on port 9003');
         });
     }
