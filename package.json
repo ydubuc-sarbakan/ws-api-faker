@@ -5,6 +5,7 @@
     "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
+        "install-build": "npm install && npm run build",
         "build": "npx tsc",
         "start": "node dist/main.js"
     },
