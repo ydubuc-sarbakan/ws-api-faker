@@ -40,41 +40,70 @@ export class WsClient {
 
         // mega hack
         const server = http.createServer((req, res) => {
+            const playerIdMap: Record<string, string> = {
+                '1': '2dd3f23c-ef98-4755-a834-d782eddcd862',
+                '2': '20ddf5a5-1dd5-44b8-87b1-f83030055c97',
+                '3': '60d723f6-f285-41e9-910b-b4875fa5d7ab',
+                '4': '2ec147d8-9834-47d0-b32e-4bc28f8722e9',
+            };
+
             console.log(`Received HTTP request: ${req.method} ${req.url}`);
 
             if (req.method === 'GET' && req.url?.startsWith('/auth/scan')) {
                 let body = '';
+
                 req.on('data', (chunk) => {
                     console.log('Received chunk:', chunk.toString());
                     body += chunk;
                 });
+
                 req.on('end', async () => {
+                    res.writeHead(404, { 'Content-Type': 'application/json' });
+
                     try {
                         console.log('Received scan request with body:', body);
 
-                        const machineId = new URL(req.url!, `http://${req.headers.host}`).searchParams.get('machineId');
-                        console.log(`Extracted machineId: ${machineId}`);
+                        const url = req.url;
+                        if (!url) {
+                            return res.end(JSON.stringify({ error: 'Invalid request URL' }));
+                        }
 
-                        const websocket = ScanManager.Instance().getScan(machineId!);
-                        const player = await StashManager.Instance()
-                            .getStash('players')
-                            ?.get<Player>('2dd3f23c-ef98-4755-a834-d782eddcd862');
+                        const machineId = new URL(url, `http://${req.headers.host}`).searchParams.get('machineId');
+                        if (!machineId) {
+                            return res.end(JSON.stringify({ error: 'Missing machineId' }));
+                        }
+
+                        const websocket = ScanManager.Instance().getScan(machineId);
+                        if (!websocket) {
+                            return res.end(JSON.stringify({ error: 'Scan session not found' }));
+                        }
+
+                        const playerId = playerIdMap[machineId];
+                        if (!playerId) {
+                            return res.end(JSON.stringify({ error: 'Invalid machineId' }));
+                        }
+
+                        const player = await StashManager.Instance().getStash('players')?.get<Player>(playerId);
+                        if (!player) {
+                            return res.end(JSON.stringify({ error: 'Player not found' }));
+                        }
+
                         const data = new ReturnPlayerInfoServerResponseData(
-                            player!.roleId,
-                            player!.nickname,
-                            player!.avatarUrl,
-                            player!.lv,
-                            player!.exp,
-                            player!.trackList,
+                            player.roleId,
+                            player.nickname,
+                            player.avatarUrl,
+                            player.lv,
+                            player.exp,
+                            player.trackList,
                         );
                         const response = new ReturnPlayerInfoServerResponse(data);
                         websocket?.send(JSON.stringify(response));
-                        ScanManager.Instance().removeScan(machineId!);
+                        ScanManager.Instance().removeScan(machineId);
 
-                        res.writeHead(200, { 'Content-Type': 'application/json' });
                         res.end(JSON.stringify({ message: 'Scan received' }));
                     } catch (e) {
                         console.error(e);
+                        res.end(JSON.stringify({ message: e }));
                     }
                 });
             } else {

@@ -57,7 +57,7 @@ export class CardsService {
         }
 
         try {
-            const _ = await this.stash.put(card, card.cardId, false);
+            const _ = await this.stash.put(card, card.cardId, true);
             return card;
         } catch (e) {
             throw new Error(`Failed to update card with id "${dto.cardId}": ${(e as Error).message}`);

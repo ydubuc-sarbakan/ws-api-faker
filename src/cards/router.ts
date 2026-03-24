@@ -22,17 +22,17 @@ export class CardsRouter extends WsRouter<AppEnvelope> {
         switch (requestEnvelope.action) {
             case ActivateCardClientRequest.ACTION: {
                 const request = requestEnvelope.openAs(ActivateCardClientRequest);
-                this.cardsController.handleActivateCard(request, socket);
+                this.tryHandling(() => this.cardsController.handleActivateCard(request, socket));
                 return true;
             }
             case CheckCardClientRequest.ACTION: {
                 const request = requestEnvelope.openAs(CheckCardClientRequest);
-                this.cardsController.handleCheckCard(request, socket);
+                this.tryHandling(() => this.cardsController.handleCheckCard(request, socket));
                 return true;
             }
             case InsertCardClientRequest.ACTION: {
                 const request = requestEnvelope.openAs(InsertCardClientRequest);
-                this.cardsController.handleInsertCard(request, socket);
+                this.tryHandling(() => this.cardsController.handleInsertCard(request, socket));
                 return true;
             }
         }
